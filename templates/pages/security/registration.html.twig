@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}symrecipe - Inscription
+{% endblock %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+	<div class="container">
+		<h1 class="mt-4">
+			Formulaire d'inscription
+		</h1>
+
+		{{ form_start(form) }}
+		{{ form_widget(form)}}
+		{{ form_end(form)}}
+
+	</div>
+{% endblock %}

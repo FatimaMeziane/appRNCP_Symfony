@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\RegistrationType;
+use App\Form\SubmitType;
+class SecurityController extends AbstractController
+{
+    /**
+     *  this controlle allow us to login
+     *
+     * @return Response
+     */
+    #[Route('/connexion', name: 'security.login',methods:['GET','POST'])]
+    public function login(): Response
+    {
+        return $this->render('pages/security/login.html.twig', [
+            'controller_name' => 'SecurityController',
+        ]);
+    }
+    /**
+     * this controlle allow us to logout
+     *
+     * @return void
+     */
+    #[Route('/deconnexion','security.logout')]
+    public function logout() {
+        // nothing to do here
+    }
+    
+    /**
+     * this controlle allow us to register
+     *
+     * @param Request $req
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route('/inscription','security.registration',methods:['POST','GET'])]
+    public function registration(
+        Request $req,
+        EntityManagerInterface $manager
+    ):Response
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_USER']);
+        $form = $this->createForm(RegistrationType::class, $user);
+        $form->handleRequest($req);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'votre compte a bien été créé!'
+            );
+            return $this->redirectToRoute('security.login');
+        }
+        return $this->render('pages/security/registration.html.twig',
+        ['form' => $form->createview()]);
+    }
+}
