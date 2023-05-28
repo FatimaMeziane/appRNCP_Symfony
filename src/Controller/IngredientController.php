@@ -4,14 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Ingredient;
 use App\Form\IngredientType;
-use App\Repository\IngredientRepository;
-use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Types\TextType;
+use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class IngredientController extends AbstractController
@@ -27,7 +30,7 @@ class IngredientController extends AbstractController
 
 
     #[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
-
+    #[IsGranted('ROLE_USER')]
     public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
 
@@ -83,6 +86,7 @@ class IngredientController extends AbstractController
     /**
      * this controller is responsible for updating the ingredient
      */
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/modifierIngredient/{id}', name: 'ingredient.edit', methods: ['GET', 'POST'])]
     public function editIngredient(
         Request $req,

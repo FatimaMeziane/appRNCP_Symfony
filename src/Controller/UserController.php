@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use App\Form\UserType;
 use App\Form\UserPasswordType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
@@ -17,30 +18,31 @@ class UserController extends AbstractController
     /**
      * this controller allows users to updat there profile
      *
-     * @param User $user
+     * @param User $choosenUser
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[Security("is_granted('ROLE_USER') and user === choosenUser")]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'])]
     public function edit(
-        User $user,
+        User $choosenUser,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
     ): Response {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
+        // if (!$this->getUser()) {
+        //     return $this->redirectToRoute('security.login');
+        // }
         // on teste si le user recuperer avec l'Id est le même que le user courant (this) grâce au paramConverter
-        if ($this->getUser() !== $user) {
-            return $this->redirectToRoute('recipe.index');
-        }
-        $form = $this->createForm(UserType::class, $user);
+        // if ($this->getUser() !== $user) {
+        //     return $this->redirectToRoute('recipe.index');
+        // }
+        $form = $this->createForm(UserType::class, $choosenUser);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // on test si le password est valid avec 'methode isPasswordValid'
-            if ($hasher->isPasswordValid($user, $form->getData()->getPlainPassword())) {
+            if ($hasher->isPasswordValid($choosenUser, $form->getData()->getPlainPassword())) {
 
                 $user = $form->getData();
                 $manager->persist($user);
@@ -66,15 +68,16 @@ class UserController extends AbstractController
     /**
      * Undocumented function
      *
-     * @param User $user
+     * @param User $choosenUser
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @param UserPasswordHasherInterface $hasher
      * @return Response
      */
+    #[Security("is_granted('ROLE_USER') and user === choosenUser")]
     #[Route('/utilisateur/edition-mot-de-passe/{id}', name: 'user.edit.password', methods: ['GET', 'POST'])]
     public function EditPassword(
-        User $user,
+        User $choosenUser,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
@@ -84,9 +87,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])) {
-                $user->setUpdatedAt(new \DateTimeImmutable());
-                $user->setPlainPassword(
+            if ($hasher->isPasswordValid($choosenUser, $form->getData()['plainPassword'])) {
+                $choosenUser->setUpdatedAt(new \DateTimeImmutable());
+                $choosenUser->setPlainPassword(
                     $form->getData()['newPassword']
                     // $request->query->get('newPassword')
                 );
@@ -95,7 +98,7 @@ class UserController extends AbstractController
                     'succes',
                     'Le mot de passe a été modifier'
                 );
-                $manager->persist($user);
+                $manager->persist($choosenUser);
                 $manager->flush();
                 return $this->redirectToRoute('recipe.index');
             } else {

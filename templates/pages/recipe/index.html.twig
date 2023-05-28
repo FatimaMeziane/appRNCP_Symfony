@@ -11,25 +11,25 @@
 		{% if not recipes.getTotalItemCount is same as (0) %}
 			<h1>Mes recettes</h1>
 			<div class="d-flex justify-content-end">
-				<a href="{{ path('ajouteRecette')}}" class="btn btn-primary d-flex justify-content-end">Créer une recette</a>
+				<a href="{{ path('ajouteRecette')}}" class="btn btn-primary d-flex justify-content-end">Ajouter une recette</a>
 			</div>
 
-    			{# message flash si on bien rajouter une nouvelle recette #}
-				{% for message in app.flashes('success') %}
-								<div class=" alert alert-success mt-3">
-				{{ message }}
-			</div>
-		{% endfor %}
-		
+			{# message flash si on bien rajouter une nouvelle recette #}
+			{% for message in app.flashes('success') %}
+				<div class=" alert alert-success mt-3">
+					{{ message }}
+				</div>
+			{% endfor %}
+
 			<div class="count mt-2">
 
-					Il ya
-					{{ recipes.getTotalItemCount }}
-					recettes au total
-				
+				Il ya
+				{{ recipes.getTotalItemCount }}
+				recettes au total
+
 			</div>
-        
-            
+
+
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -54,13 +54,13 @@
 								{# {{ recipe.price }} #}
 								{{recipe.price is same as(null) ? 'Non renseigné' : recipe.price }}
 							</td>
-							recipe.difficulty
+							
 							<td>
 								{{recipe.difficulty is same as(null) ? 'Non renseigné' : recipe.difficulty}}</td>
 							<td>
 								{{ recipe.creatAt|date("d/m/Y") }}</td>
 							<td>
-								
+
 								<a href="{{ path('recipe.edit', {id: recipe.id}) }}" class="btn btn-info">Modifier</a>
 							</td>
 							<td>
@@ -79,6 +79,9 @@
 		</div>
 	{% else %}
 		<h4>il n'ya pas de recette</h4>
+		<div class="d-flex justify-content-center">
+			<a href="{{ path('ajouteRecette')}}" class="btn btn-primary">Créer une recette</a>
+		</div>
 
 	{% endif %}
 {% endblock %}
