@@ -11,15 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecipeController extends AbstractController
 {
     /**
-     * This controller display all recipes
+     * This controller display all recipes for the  current user
      *
      * @param RecipeRepository $repository
      * @param PaginatorInterface $paginator
@@ -38,7 +37,6 @@ class RecipeController extends AbstractController
         $recipes = $paginator->paginate(
             //Liste des recettes de l'utilisateur connecté
             $repository->findBy(['user' => $this->getUser()]),
-
             $request->query->getInt('page', 1),
 
             10
@@ -48,7 +46,44 @@ class RecipeController extends AbstractController
         ]);
     }
 
+    /**
+     * this controller allow us to see a recipe if this one is public
+     *
+     * @param RecipeRepository $repository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/recette/publique', 'recipe.index.public', methods: ['GET'])]
+    public function indexPublic(
+        RecipeRepository $repository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+        $recipes = $paginator->paginate(
+            $repository->findPublicRecipe(null),
+            $request->query->getInt('page', 1),
+            10
+        );
+        return $this->render('pages/recipe/index_public.html.twig', [
+            'recipes' => $recipes
+        ]);
+    }
 
+    /**
+     * This conrtroller allow us to see a recipe if this one is public
+     *
+     * @param Recipe $recipe
+     * @return Response
+     */
+    #[Security("is_granted('ROLE_USER') and recipe.isIsPublic() === true")]
+    #[Route('/recette/{id}', 'recipe.show', methods: ['GET'])]
+    public function show(Recipe $recipe): Response
+    {
+        return $this->render('pages/recipe/show.html.twig', [
+            'recipe' => $recipe
+        ]);
+    }
     /**
      * this controller is responsible for creating new recipe
      *

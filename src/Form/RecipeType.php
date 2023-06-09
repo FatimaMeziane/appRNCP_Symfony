@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class RecipeType extends AbstractType
 {
+    /*recuperer l'utilisateur courant*/
     private $token;
     public function __construct(TokenStorageInterface $token)
     {
@@ -158,9 +159,7 @@ class RecipeType extends AbstractType
                 'choice_label' => 'name',
                 "multiple"  => true,
                 "expanded" => true
-            ])
-           
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

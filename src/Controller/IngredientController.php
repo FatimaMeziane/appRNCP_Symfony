@@ -30,6 +30,7 @@ class IngredientController extends AbstractController
 
 
     #[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
+    //on donne l'accée  aux utilisateurs avec le role user
     #[IsGranted('ROLE_USER')]
     public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -86,6 +87,7 @@ class IngredientController extends AbstractController
     /**
      * this controller is responsible for updating the ingredient
      */
+    // on donne accee au user et on verifier que l'ingredient apartient a l'utilisateur courant 
     #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/modifierIngredient/{id}', name: 'ingredient.edit', methods: ['GET', 'POST'])]
     public function editIngredient(
@@ -116,6 +118,7 @@ class IngredientController extends AbstractController
     /**
      * this controller is responsible for deleting the ingredient
      */
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/supprimerIngredient/{id}', name: 'ingredient.delete', methods: ['GET'])]
     public function deleteIngredient(
         EntityManagerInterface $manager,
