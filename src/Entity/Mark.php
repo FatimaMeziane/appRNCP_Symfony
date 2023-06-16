@@ -27,6 +27,8 @@ class Mark
     #[Assert\LessThan(6)]
     private ?int $mark = null;
 
+
+
     #[ORM\ManyToOne(inversedBy: 'marks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -93,4 +95,7 @@ class Mark
 
         return $this;
     }
+    
+
+ 
 }

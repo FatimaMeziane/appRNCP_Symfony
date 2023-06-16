@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+    	{# message flash si on bien rajouter une nouvelle recette #}
+			{% for message in app.flashes('success') %}
+				<div class=" alert alert-success mt-3">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+    <h1>Formulaire de contact </h1>
+
+    {{ form(form)}}
+    </div>
+{% endblock %}

@@ -32,7 +32,10 @@ class IngredientController extends AbstractController
     #[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
     //on donne l'accée  aux utilisateurs avec le role user
     #[IsGranted('ROLE_USER')]
-    public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
+    public function index(
+        IngredientRepository $repository,
+     PaginatorInterface $paginator, 
+     Request $request): Response
     {
 
         $ingredients = $paginator->paginate(

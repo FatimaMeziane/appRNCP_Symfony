@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
 
 class RecipeType extends AbstractType
 {
@@ -142,6 +144,12 @@ class RecipeType extends AbstractType
                 ]
             ]
             )
+            ->add('imageFile',VichImageType::class,[
+                'label' => 'Image de la recette',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ]
+            ])
             ->add('ingredients',EntityType::class,[
                 'class' => Ingredient::class,
                 'query_builder' => function (IngredientRepository $r)

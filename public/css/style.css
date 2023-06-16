@@ -3,3 +3,10 @@
     height: 400px;
     width: 1200px;
     }
+    
+.vich_image
+{
+ border: 1px solid red !important;
+height: 500px !important;
+width: 500px !important;
+}

@@ -7,9 +7,22 @@
 	<div class="container">
 		<h1 class='mt-4'>
 			{{recipe.name}}</h1>
-            <p>La moyenne de cette recette est de {{ recipe.average }}/5 </p>
-                {# {{ dump(recipe.average) }} #}
-           
+
+			<div class="vich_image">
+				<img src ="{{ vich_uploader_asset(recipe, 'imageFile')|default('https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1200px-User-avatar.svg.png') }}" class="img-fluid rounded-start" alt="">
+			</div>
+		{# message flash si on bien rajouter une note #}
+		{% for message in app.flashes('success') %}
+			<div class=" alert alert-success mt-3">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		<p>La moyenne de cette recette est de
+			{{ recipe.average|number_format(2, '.', ',')}}/5
+		</p>
+		{# {{ dump(recipe.average) }} #}
+
 		<div>
 			<span class="badge bg-primary">
 				Créée le
@@ -61,11 +74,16 @@
 		<div>
 			{{recipe.description|raw}}
 		</div>
-        <div class="mt-4">
-            <p class='mt-4'> Ingrédients</p>
-            {% for ingredient in recipe.ingredients %}
-            <span class="badge bg-primary">{{ ingredient.name }}</span>
-            {% endfor %}
-        </div>
-	</div>
-{% endblock %}
+		<div class="mt-4">
+			<p class='mt-4'>
+				Ingrédients</p>
+			{% for ingredient in recipe.ingredients %}
+				<span class="badge bg-primary">{{ ingredient.name }}</span>
+			{% endfor %}
+		</div>
+
+		<div class="mark">
+			{{form(form)}}
+			</div>
+		</div>
+	{% endblock %}
