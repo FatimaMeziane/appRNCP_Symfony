@@ -72,7 +72,10 @@ class RegistrationType extends AbstractType
                 'second_options' => [
                     "label" => "Confirmation du mot de passe"
                 ],
-                "invalid_message" => "Les mots de passe ne correspondent pas."
+                "invalid_message" => "Les mots de passe ne correspondent pas.",
+                'constraints' => [
+                    new assert\Length(min: 8, minMessage:"Votre mot de passe doit faire minimum 8 caractères")
+                ]
             ])
 
             ->add('submit', SubmitType::class, [

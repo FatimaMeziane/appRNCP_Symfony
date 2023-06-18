@@ -14,28 +14,38 @@
 			<h1 class="display-4" id="">Bienvenu sur Recettes
 			</h1>
 			{# <p class="lead">SymRecip est une application qui va te permettre de créer des recettes à base d'ingrédients que tu auras toi-même créer.tu pourras partager tes recettes à la communauté du site, ou bien les garder en privées.</p>
-									  <hr class="my-4">
-									  <p>Pour commencer, rendez-vous sur la page d'Inscription</p>
-									  <p class="lead">
-									    <a class="btn btn-primary btn-lg" href="#" role="button">Inscription</a>
-									  </p> #}
+															  <hr class="my-4">
+															  <p>Pour commencer, rendez-vous sur la page d'Inscription</p>
+															  <p class="lead">
+															    <a class="btn btn-primary btn-lg" href="#" role="button">Inscription</a>
+															  </p> #}
 			{# <img id="homeicture" src={{asset('images/nourriture-ingredients.jpg')}} width='100%' alt="recettes"/> #}
 		</div>
 		<div class="recipes">
 			<h2 class="mt-4">Recettes de la communauté</h2>
+
+
 			<div class="d-flex justify-content-center flex-wrap">
 				{% for recipe in recipes %}
+					<a class="nav-link active" href="{{ path('recipe.show', { 'id' : recipe.id }) }}">
 
-					<div class="card text-white bg-primary mb-3 mx-2" style="max-width: 20rem;">
-						<div class="card-header">Recette N {{ recipe.id}}</div>
-						<div class="card-body">
-							<h4 class="card-title">{{recipe.name}}</h4>
-							 <p class="card-text">{{recipe.description|slice(0.100) ~ '...'}}</p>
-							<a href="{{ path('recipe.index') }}"></a>
+						<div class="card text-white bg-primary mb-3 mx-2" style="max-width: 20rem;">
+							<div class="card-header">Recette Num
+								{{ recipe.id}}</div>
+							<div class="card-body">
+								<h4 class="card-title">{{recipe.name}}</h4>
+								{# <p class="card-text">{{recipe.description|slice(0.100) ~ '...'}}</p>
+																							  #}
+								{# <div class="vich_image">
+																	<img src="{{ vich_uploader_asset(recipe, 'imageFile')|default('https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1200px-User-avatar.svg.png') }}" class="img-fluid rounded-start" alt="">
+																</div> #}
+								<img id="homeicture" src={{asset('images/nourriture-ingredients.jpg')}} width='100%' alt="recettes"/>
+								<a href="{{ path('recipe.index') }}"></a>
+							</div>
 						</div>
-					</div>
-				{% endfor %}
-			</div>
+					{% endfor %}
+				</div>
+			</a>
 		</div>
 	</div>
 

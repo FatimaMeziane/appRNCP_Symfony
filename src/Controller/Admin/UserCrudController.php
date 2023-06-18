@@ -25,19 +25,20 @@ class UserCrudController extends AbstractCrudController
             ->setPageTitle("index", 'Recette - Administration des utilisateurs')
             ->setPaginatorPageSize(10);
     }
-    // Les champs de nos utilisateurs qu'on veut afficher  sur le dashbord
+    // Les champs de nos utilisateurs qu'on veut afficher et ajouter sur le dashbord
     public function configureFields(string $pageName): iterable
     {
 
         return [
             IdField::new('id')
                 ->hideOnForm(),
+                
             TextField::new('fullName'),
             TextField::new('pseudo'),
-            TextField::new('email')
-                ->setFormTypeOption('disabled', 'disabled'),
-            ArrayField::new('roles')
-                ->hideOnIndex(),
+            TextField::new('email'),
+                // ->setFormTypeOption('disabled', 'disabled'),
+            ArrayField::new('roles'),
+                // ->hideOnIndex(),
             DateTimeField::new('createAt')
                 ->setFormTypeOption('disabled', 'disabled'),
         ];

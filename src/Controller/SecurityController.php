@@ -17,6 +17,7 @@ class SecurityController extends AbstractController
      *
      * @return Response
      */
+    // 
     #[Route('/connexion', name: 'security.login',methods:['GET','POST'])]
     public function login(): Response
     {

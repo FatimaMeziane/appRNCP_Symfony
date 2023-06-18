@@ -50,6 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[assert\NotBlank()]
+    #[assert\Length(min: 8, minMessage:"minimun huit caractères")]
     private ?string $password = 'password';
 
     #[ORM\Column]
@@ -277,7 +278,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function addRecipe(Recipe $recipe): self
-    {
+    { 
         if (!$this->recipes->contains($recipe)) {
             $this->recipes->add($recipe);
             $recipe->setUser($this);
