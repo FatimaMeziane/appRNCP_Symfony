@@ -7,7 +7,9 @@ use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Security\Core\Security;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +21,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 
 class RecipeType extends AbstractType
@@ -100,19 +101,25 @@ class RecipeType extends AbstractType
                 ]
             ])
                 
-            ->add('description',TextareaType::class,[
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => "Description"
+            // ->add('description',TextareaType::class,[
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'placeholder' => "Description"
 
+            //     ],
+            //     'label' => 'Description de la recette',
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            //     'constraints' => [
+            //         new assert\NotBlank()
+            //     ]
+            // ])
+            ->add('description',CKEditorType::class,[
+                'config' => [
+                    'uiColor' => '#ffffff',    
                 ],
-                'label' => 'Description de la recette',
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-                'constraints' => [
-                    new assert\NotBlank()
-                ]
+             
             ])
             ->add('price', MoneyType::class, [
                 'attr' => [
@@ -134,21 +141,24 @@ class RecipeType extends AbstractType
                     'class' => 'form-check-input',
 
                 ],
-                // 'required'  => false,
+                'required'  => false,
                 'label' => 'Favoris ? ',
                 'label_attr' => [
                     'class' => 'form-check-label'
                 ],
-                'constraints' => [
-                    new assert\NotNull()
-                ]
+                // 'constraints' => [
+                //     new assert\NotNull()
+                // ]
             ]
             )
             ->add('imageFile',VichImageType::class,[
                 'label' => 'Image de la recette',
+                'required'  => false,
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ]
+
+                
             ])
             ->add('ingredients',EntityType::class,[
                 'class' => Ingredient::class,
@@ -166,7 +176,8 @@ class RecipeType extends AbstractType
                 ],
                 'choice_label' => 'name',
                 "multiple"  => true,
-                "expanded" => true
+                "expanded" => true,
+                
             ]);
     }
 

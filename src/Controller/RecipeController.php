@@ -4,19 +4,23 @@ namespace App\Controller;
 
 use App\Entity\Mark;
 use App\Entity\Recipe;
-use App\Form\RecipeType;
 use App\Form\MarkType;
-use App\Repository\RecipeRepository;
+use App\Entity\Comment;
+use App\Form\RecipeType;
+use App\Form\CommentType;
 use App\Repository\MarkRepository;
+use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form;
+
 
 class RecipeController extends AbstractController
 {
@@ -80,43 +84,60 @@ class RecipeController extends AbstractController
      * @param Recipe $recipe
      * @return Response
      */
-    #[Security("is_granted('ROLE_USER') and (recipe.isIsPublic() === true) || user === recipe.getUser()" )]
-    #[Route('/recette/{id}', 'recipe.show', methods: ['GET', 'POST'], requirements:['id' => '\d+'])]
+    #[Security("is_granted('ROLE_USER') and (recipe.isIsPublic() === true) || user === recipe.getUser()")]
+    #[Route('/recette/{id}', 'recipe.show', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function show(
         Recipe $recipe,
         Request $request,
         MarkRepository $markRepository,
         EntityManagerInterface $manager
     ): Response {
-        $mark = new Mark();
+        // je recherche si une note existe déjà
+        $exists = true;
+        $mark = $markRepository->findOneBy([
+            'user' => $this->getUser(),
+            'recipe' => $recipe
+        ]);
+        // si pas encore de vote, j'en créé un nouveau
+        if (empty($mark)) {
+            $mark = new Mark();
+            $mark
+                ->setUser($this->getUser())
+                ->setRecipe($recipe);
+            $exists = false;
+        }
+
         $form = $this->createForm(MarkType::class, $mark);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $mark->setUser($this->getUser())
-                ->setRecipe($recipe);
-
-            $existingMark = $markRepository->findOneBy([
-                'user' => $this->getUser(),
-                'recipe' => $recipe
-            ]);
-
-            if (!$existingMark) {
-                $manager->persist($mark);
-            } else {
-                $existingMark->setMark(
-                    $form->getData()->getMark()
-                );
-            }
-            $manager->flush();
+            $markRepository->save($mark, true);
             $this->addFlash(
                 'success',
-                'Votre note a bien été prise en compte'
+                sprintf('Votre note a bien été %s', $exists ? 'mise à jour' : 'prise en compte')
             );
             return $this->redirectToRoute('recipe.show', ['id' => $recipe->getId()]);
         }
 
+        $comment = new Comment();
+        $comment->setRecipe($recipe);
+        if ($this->getUser()) {
+            $comment->setAuthor($this->getUser());
+        }
+
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash('success', 'Votre commentaire a bien été enregistré.');
+
+            return $this->redirectToRoute('recipe.show', ['id' => $recipe->getId()]);
+        }
 
         return $this->render('pages/recipe/show.html.twig', [
+            'recipe' => $recipe,
+            'formComment' => $formComment->createView(),
             'recipe' => $recipe,
             'form' => $form->createView()
         ]);
@@ -137,7 +158,7 @@ class RecipeController extends AbstractController
     ): Response {
 
         $recipe = new Recipe();
-        /* créer la forme de type classe ingredient */
+        /* créer la forme de type classe recipe */
         $form = $this->createForm(RecipeType::class, $recipe);
         /*Récuperer les donnée envoye par la form via request et les affecter au objet (ingredient) auparavant donnée auparametre de la fonction create form */
         $form->handleRequest($req);
@@ -194,7 +215,7 @@ class RecipeController extends AbstractController
      */
     #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
     #[Route('/recipe/modifierRecipe/{id}', name: 'recipe.edit', methods: ['GET', 'POST'])]
-    public function editIngredient(
+    public function editRecipe(
         Request $req,
         EntityManagerInterface $manager,
         Recipe $recipe
@@ -208,7 +229,7 @@ class RecipeController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                'Votre ingrédient a été modifié avec succès!'
+                'Votre recette a été modifié avec succès!'
             );
             /* on précise la redirection*/
             return $this->redirectToRoute('recipe.index');

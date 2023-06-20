@@ -4,7 +4,7 @@
 	{{recipe.name}}
 {%  endblock  %}
 {% block body %}
-	<div class="container">
+	<div class="container border border-dark">
 		<h1 class='mt-4'>
 			{{recipe.name}}</h1>
 
@@ -37,7 +37,12 @@
 				{% set hours = (recipe.time)/60 %}
 				{% set minutes = (recipe.time) % 60 %}
 				{# {% recipe.time  =  hours  %} #}
-				<p> Temps : {{  (hours|round)}} h {{ minutes }} </p>
+				<p>
+					Temps :
+					{{  (hours|round)}}
+					h
+					{{ minutes }}
+				</p>
 				{# {{recipe.time}} #}
 			{% else %}
 				<p>Temps non renseigné</p>
@@ -45,23 +50,23 @@
 
 
 			{# {% if recipe.time %}
-							{% if recipe.time < 60 %}
-								<p>Temps ( en minute ) :
-									{{recipe.time}}
-								</p>
-							{% else %}
-									{% $hours = floor(recipe.time)/60 %}
-									{% $minutes = recipe.time % 60 %}
-									{% if(recipe.time<10)}
-										{% $minutes = '0' . $minutes %}
-									{% else %}
-										{% $minutes = $minutes %}
-									{% endif %}
-									
-									{% else %}
-										<p>Temps non renseigné</p>
-						{% endif %}
-						{% endif %} #}
+																			{% if recipe.time < 60 %}
+																				<p>Temps ( en minute ) :
+																					{{recipe.time}}
+																				</p>
+																			{% else %}
+																					{% $hours = floor(recipe.time)/60 %}
+																					{% $minutes = recipe.time % 60 %}
+																					{% if(recipe.time<10)}
+																						{% $minutes = '0' . $minutes %}
+																					{% else %}
+																						{% $minutes = $minutes %}
+																					{% endif %}
+																					
+																					{% else %}
+																						<p>Temps non renseigné</p>
+																		{% endif %}
+																		{% endif %} #}
 
 
 		</div>
@@ -112,6 +117,41 @@
 
 		<div class="mark">
 			{{form(form)}}
+		</div>
+		<div class="comment">
+			{{form(formComment)}}
+		</div>
+		<div class="mt-5">
+			<h2 class="">
+				{{ recipe.comments | length  }} Commentaire(s)
+			</h2>
+			<div>
+				<div class="w-full-width">
+					{# {{form_start(form)}} #}
+					{# {{form_end(form)}} #}
+				</div>
 			</div>
+			{%  for comment in recipe.comments %}
+
+				<div class="block p-6 rounded-lg shadow-lg bg-white">
+					<div class="d-flex flex-row justify-content-between bd-highlight mb-3">
+						<div class="p-1">
+
+							<img class="avatar" src={{asset('/images/profil.png')}} alt="avatar"/>
+						</div>
+						<div class="">
+							<p class="text-gray-500 font-light mb-6">
+								{{ comment.content }}
+							</p>
+							<p class="font-semibold text-xl mb-2 text-gray-800">{{ comment.author }}</p>
+							<p>{{ comment.createdAt|date('d/m/y H:i')  }}</p>
+						</div>
+					</div>
+				</div>
+
+			{%endfor %}
+
+
+		</div>
 		</div>
 	{% endblock %}

@@ -91,7 +91,8 @@ class Recipe
 
     private ?float $average = null;
 
-
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
     public function __construct()
     {
@@ -99,6 +100,7 @@ class Recipe
         $this->creatAt = new \DateTimeImmutable;
         $this->updateAt = new \DateTimeImmutable;
         $this->marks = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
     #[ORM\PrePersist()]
     public function setUpdateAtValue()
@@ -340,5 +342,47 @@ class Recipe
         }
         $this->average = $total / count($marks);
         return $this->average;
+    }
+
+    /**
+     * Get the value of comments
+     */ 
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set the value of comments
+     *
+     * @return  self
+     */ 
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getRecipe() === $this) {
+                $comment->setRecipe(null);
+            }
+        }
+
+        return $this;
     }
 }

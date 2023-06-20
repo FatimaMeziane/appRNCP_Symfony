@@ -4,6 +4,11 @@
     width: 1200px;
     }
     
+.avatar{
+    border: 1px solid red !important;
+    height: 50px !important;
+    width: 50px !important;;
+}
 .vich_image
 {
  border: 1px solid red !important;
