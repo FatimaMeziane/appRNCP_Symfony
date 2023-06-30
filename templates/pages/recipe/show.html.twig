@@ -4,154 +4,210 @@
 	{{recipe.name}}
 {%  endblock  %}
 {% block body %}
-	<div class="container border border-dark">
-		<h1 class='mt-4'>
-			{{recipe.name}}</h1>
-
-		<div class="vich_image">
-			<img src="{{ vich_uploader_asset(recipe, 'imageFile')|default('https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1200px-User-avatar.svg.png') }}" class="img-fluid rounded-start" alt="">
-		</div>
-		{# message flash si on bien rajouter une note #}
-		{% for message in app.flashes('success') %}
-			<div class=" alert alert-success mt-3">
-				{{ message }}
-			</div>
-		{% endfor %}
-
-		<p>La moyenne de cette recette est de
-			{{ recipe.average|number_format(2, '.', ',')}}/5
-		</p>
-		{# {{ dump(recipe.average) }} #}
-
-		<div>
-			<span class="badge bg-primary">
-				Créée le
-				{{recipe.creatAt|date('d/m/y')}}</span>
-		</div>
-		<div class="mt-4">
-			{% if recipe.time and recipe.time < 60 %}
-				<p>Temps ( en minute ) :
-					{{recipe.time}}
-				</p>
-			{% elseif recipe.time > 60 %}
-				{% set hours = (recipe.time)/60 %}
-				{% set minutes = (recipe.time) % 60 %}
-				{# {% recipe.time  =  hours  %} #}
-				<p>
-					Temps :
-					{{  (hours|round)}}
-					h
-					{{ minutes }}
-				</p>
-				{# {{recipe.time}} #}
-			{% else %}
-				<p>Temps non renseigné</p>
-			{% endif %}
-
-
-			{# {% if recipe.time %}
-																			{% if recipe.time < 60 %}
-																				<p>Temps ( en minute ) :
-																					{{recipe.time}}
-																				</p>
-																			{% else %}
-																					{% $hours = floor(recipe.time)/60 %}
-																					{% $minutes = recipe.time % 60 %}
-																					{% if(recipe.time<10)}
-																						{% $minutes = '0' . $minutes %}
-																					{% else %}
-																						{% $minutes = $minutes %}
-																					{% endif %}
-																					
-																					{% else %}
-																						<p>Temps non renseigné</p>
-																		{% endif %}
-																		{% endif %} #}
-
-
-		</div>
-		<div class="mt-4">
-			{% if recipe.nbPeople %}
-				<p>
-					Pour
-					{{recipe.nbPeople}}
-					personnes
-				</p>
-			{% else %}
-				<p>Nombre de personne non renseigné</p>
-			{% endif %}
-		</div>
-		<div class="mt-4">
-			{% if recipe.Difficulty %}
-				<p>
-					Difficulté :
-					{{recipe.Difficulty}}/5
-				</p>
-			{% else %}
-				<p>Difficulté non renseigné</p>
-			{% endif %}
-		</div>
-		<div class="mt-4">
-			{% if recipe.price %}
-				<p>
-					Prix ( en Euro) :
-					{{recipe.price}}
-					euros
-				</p>
-			{% else %}
-				<p>Prix non renseigné</p>
-			{% endif %}
-		</div>
-
-
-		<div>
-			{{recipe.description|raw}}
-		</div>
-		<div class="mt-4">
-			<p class='mt-4'>
-				Ingrédients</p>
-			{% for ingredient in recipe.ingredients %}
-				<span class="badge bg-primary">{{ ingredient.name }}</span>
-			{% endfor %}
-		</div>
-
-		<div class="mark">
-			{{form(form)}}
-		</div>
-		<div class="comment">
-			{{form(formComment)}}
-		</div>
-		<div class="mt-5">
-			<h2 class="">
-				{{ recipe.comments | length  }} Commentaire(s)
-			</h2>
-			<div>
-				<div class="w-full-width">
-					{# {{form_start(form)}} #}
-					{# {{form_end(form)}} #}
+	<div class="container">
+		<main>
+			<section>
+				{# Le nom de la recette #}
+				<div class="d-flex mt-5">
+					<hr>
+					<div>
+						<h1 class='mx-5 text-center'>{{recipe.name}}</h1>
+					</div>
+					<hr>
 				</div>
-			</div>
-			{%  for comment in recipe.comments %}
+				{# j'affiche l'auteur de la recette, le temps de preparation, date de création...  #}
+				<div class="infoRecipe mt-5 mx-5 d-flex justify-content-around">
+					<div>
+						<p>
+							par :
+							<strong>
+								{{recipe.user}}
+							</strong>
+						</p>
+					</div>
 
-				<div class="block p-6 rounded-lg shadow-lg bg-white">
-					<div class="d-flex flex-row justify-content-between bd-highlight mb-3">
-						<div class="p-1">
+					<div class="infoRecipe">
+						<p>
+							le :
+							{{recipe.creatAt|date('d/m/y')}}</p>
+					</div>
 
-							<img class="avatar" src={{asset('/images/profil.png')}} alt="avatar"/>
-						</div>
-						<div class="">
-							<p class="text-gray-500 font-light mb-6">
-								{{ comment.content }}
+					<div class="">
+						{% if recipe.time and recipe.time < 60 %}
+							<p>Temps ( en minute ) :
+								{{recipe.time}}
 							</p>
-							<p class="font-semibold text-xl mb-2 text-gray-800">{{ comment.author }}</p>
-							<p>{{ comment.createdAt|date('d/m/y H:i')  }}</p>
-						</div>
+						{% elseif recipe.time > 60 %}
+							{% set hours = (recipe.time)/60 %}
+							{% set minutes = (recipe.time) % 60 %}
+							<p>
+								Temps :
+								{{  (hours|round)}}
+								h
+								{{ minutes }}
+							</p>
+						{% else %}
+							<p>Temps non renseigné</p>
+						{% endif %}
 					</div>
 				</div>
 
-			{%endfor %}
+				<div class=" infoRecipe mx-5 d-flex justify-content-around">
+					<div class="">
+						{% if recipe.nbPeople %}
+							<p>
+								Pour :
+								{{recipe.nbPeople}}
+								personnes
+							</p>
+						{% else %}
+							<p>Nombre de personne non renseigné</p>
+						{% endif %}
+					</div>
+					<div class="">
+						{% if recipe.Difficulty %}
+							<p>
+								Difficulté :
+								{{recipe.Difficulty}}/5
+							</p>
+						{% else %}
+							<p>Difficulté non renseigné</p>
+						{% endif %}
+					</div>
+					<div class="">
+						{% if recipe.price %}
+							<p>
+								Prix ( en Euro) :
+								{{recipe.price}}
+								euros
+							</p>
+						{% else %}
+							<p>Prix non renseigné</p>
+						{% endif %}
+					</div>
+				</div>
 
+				{# L'image de la recette #}
+				<div class=" text-center ">
+					<img  src="{{ vich_uploader_asset(recipe, 'imageFile')|default(asset('images/logoClubRecette2.png')) }}" class="img-fluid rounded-start recipePicture" alt="l'image de la recette">
+				</div>
 
-		</div>
-		</div>
-	{% endblock %}
+				<div class="d-flex mt-5">
+					<hr class="">
+					<div class="">
+						<p class='recipShowDetails mx-5'>
+							Ingrédients
+						</p>
+					</div>
+					<hr>
+				</div>
+
+				{# la liste des ingrédients #}
+
+				<div class="divIngredients">
+					{% if recipe.nbPeople %}
+						<p class="mx-2">
+							Pour
+							{{recipe.nbPeople}}
+							personnes
+						</p>
+					{% else %}
+						<p class="mx-2">Nombre de personne non renseigné</p>
+					{% endif %}
+
+					{% for ingredient in recipe.ingredients %}
+						<menu>
+							<li>
+								<span class="badge bg-primary">{{ ingredient.name }}</span>
+							</li>
+						</menu>
+
+					{% endfor %}
+				</div>
+
+				{#message flash indiquant que la note a été ajoutée avec succès #}
+				{% for message in app.flashes('success') %}
+					<div class=" alert alert-success mt-3">
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				<div class="d-flex mt-5">
+					<hr class="">
+					<div class="">
+						<p class='recipShowDetails mx-5'>
+							Description
+
+						</p>
+					</div>
+					<hr>
+				</div>
+				<div class="w-75 mx-auto">
+					{{recipe.description|raw}}
+				</div>
+				<div class="d-flex mt-5">
+					<hr class="">
+					<div class="">
+						<p class='recipShowDetails mx-5'>
+							Avis
+						</p>
+					</div>
+					<hr>
+				</div>
+			</section>
+			<section>
+				{# commentaire et avis #}
+				<div class="form-group w-75 m-auto">
+					<p>La moyenne de cette recette est de
+						{{ recipe.average|number_format(2, '.', ',')}}/5
+					</p>
+					{{ form_start(form) }}
+					{{ form_widget(form)}}
+
+					{{form_end(form)}}
+
+				</div>
+
+				<div class="d-flex mt-5">
+					<hr>
+					<div>
+						<p class='recipShowDetails mx-5'>
+							Commentaires
+						</p>
+					</div>
+					<hr>
+				</div>
+
+				<div class=" w-75 m-auto mt-5">
+					<h2 class="">
+						{{ recipe.comments | length  }}
+						Commentaire(s)
+					</h2>
+					<div class="comment">
+						{{form(formComment)}}
+					</div>
+					{%  for comment in recipe.comments %}
+						<div class="block p-2 m-1 rounded-lg shadow-lg bg-white">
+							<div class="d-flex bd-highlight mb-3">
+								<div class="p-1">
+									<img class="avatar" src={{asset('/images/profil.png')}} alt="avatar"/>
+								</div>
+								<div class="mx-3">
+									<strong class="font-semibold text-xl mb-2 text-gray-800">{{ comment.author }}</strong>
+									<p>{{ comment.createdAt|date('d/m/y H:i')  }}</p>
+									<p class="text-gray-500 font-light mb-6">
+										{{ comment.content }}
+									</p>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+					</div>
+			</section>
+		</main>
+	</div>
+
+		{% endblock %}
+		{% block javascripts %}
+			<script src="{{ asset('js/scripts.js') }}"></script>
+		{% endblock %}

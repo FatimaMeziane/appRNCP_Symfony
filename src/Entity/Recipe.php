@@ -385,4 +385,9 @@ class Recipe
 
         return $this;
     }
+    
+    public function getNbComments(): int
+    {
+        return $this->comments->count();
+    }
 }

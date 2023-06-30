@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}symrecipe
+{% block title %}RecetteClub
 {% endblock %}
 
 {% block body %}
-	<div class="container">
+	<div class="formLogin">
 		<h1 class="mt-4">Formulaire de connexion</h1>
-		{# message flash si on bien rajouter un nv utilisateur #}
+		{#  j'informe l'utilisateur que son compte a été créé avec succès.#}
 		{% for message in app.flashes('success') %}
 			<div class=" alert alert-success mt-3">
 				{{ message }}
@@ -27,7 +26,6 @@
 			
 			<button class="btn btn-success mt-4" type='submit'>se connecter
 			</button>
-
 		</form>
 	</div>
 {% endblock %}

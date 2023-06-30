@@ -11,12 +11,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
     {
        $builder->add('content',TextareaType::class, [
             'label' => 'Poster un nouveau commentaire',
+            'label_attr' => [
+                'class' => 'mt-2 px-4',
+                'id' => 'commentContentId'
+                
+            ],
             'constraints' => [
                 new assert\NotBlank()
             ]
        ])
        ->add('submit', SubmitType::class, [
-        'attr' => ['class' => 'btn btn-primary mt-4'],
+        'attr' => [
+            'class' => 'btn btn-primary mt-4',
+            'hidden' => true
+            ],
         'label' => 'Poster mon commentaire'
     ]);
     }

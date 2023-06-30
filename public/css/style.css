@@ -1,17 +1,159 @@
-#homePicture{
+body{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Balthazar,Arial,sans-serif;   
+
+}
+
+a,a:hover,a:focus{
+    text-decoration: none;
+    color: rgb(66, 65, 65);
+}
+
+h1{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+h2{
+    font-size: 1.7rem;
+    font-weight: bold;
+ }
+
+ nav{
+    height: 35vh !important;
+}
+.LogoClubRecettes{
+    height: 130px;
+    width: 130px;
+    margin-bottom: 20px;
+}
+/***** page login*****/
+.formLogin{
+    width: 50% !important;
+}
+/******* page showRecipe ********/
+
+.recipShowDetails{
+    font-size: 1.8rem;
+    font-weight: bolder;
+}
+
+.divIngredients,.divDescription{
+    margin-left: 12%;
+}
+
+
+.card-img-top{
+    height: 350px !important; 
+}
+
+/* page d'accueil*/
+.card
+{
+    width: 30rem;
+}
+
+.card_w{
+    width: 30% !important;
+}
+
+.hrAccueil{
+    width: 250px !important;
+    height: 0 !important;
+    border: 2px solid #EFB73E !important;
+}
+
+hr{
+    width: 550px !important;
+    height: 0 !important;
+    border: 2px solid #EFB73E !important;
+}
+
+.publicRecipe{
+    width: 30% !important;
+}
+/* show.recip */
+.recipePicture{
     object-fit: cover;
-    height: 400px;
-    width: 1200px;
+    object-position: center;
+
+    height: 500px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 14%;
     }
-    
+    nav{
+        /* background-color: #5c2d91 !important; */
+        /* height: 300px !important; */
+        height : 83px !important;
+    }
+
+    .infoRecipeDiv{
+        border: 1px solid black !important;
+    }
 .avatar{
-    border: 1px solid red !important;
+    /* border: 1px solid red !important; */
     height: 50px !important;
     width: 50px !important;;
 }
 .vich_image
 {
- border: 1px solid red !important;
-height: 500px !important;
-width: 500px !important;
+    /* border: 1px solid red !important; */
+    height: 500px !important;
+    width: 500px !important;
 }
+.bg-primary {
+    background-color: #5c2d91 !important;
+  }
+  .btn-primary {
+    color: #fff !important;
+    background-color: #ff615a !important;
+    border-color: #ff615a !important;
+  }
+
+
+  /*** Footer ***/
+
+
+  /*********  Mobile **********/
+
+@media screen and  (min-width: 280px) and (max-width: 800px){
+    
+    /******Nav Bar********/
+    nav
+    {
+     height: 260px !important;
+    }
+
+    .LogoClubRecettes
+    {
+     height: 150px !important;
+     width: 150px !important;
+    }
+
+    /*** login ****/
+    .formLogin{
+        width: 75% !important;
+        border: 1px solid rebeccapurple;
+    }
+     /*****  *****/
+
+     .infoRecipe{
+        flex-direction: column;
+     }
+     .infoRecipe > div {
+        width: 100%; 
+     }
+     h1{
+        font-size: 1.3rem;
+        /* font-weight: bold; */
+    }
+   
+     h2{
+        font-size: 1rem;
+     }
+ 
+    }

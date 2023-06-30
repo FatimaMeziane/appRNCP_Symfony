@@ -24,14 +24,18 @@ class MarkType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'form-select',
+
                 ],
-                'label' => 'Noter la recette',
+                'label' => 'La recette est terminée. Donnez votre avis ( note / 5 )',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary mt-4'],
+                'attr' => [
+                    'class' => 'btn btn-primary mt-4',
+                    'hidden' => true
+                ],
                 'label' => 'Noter la recette'
             ]);
     }
