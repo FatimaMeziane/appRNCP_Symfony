@@ -36,11 +36,9 @@
 							<h5 class="card-title">
 								<strong>{{recipe.name}}</strong>
 							</h5>
-							{# <p class="card-text">{{ recipe.description| raw |slice(0.10) ~ '...'}} </p> #}
-							{# <p class="card-text">{{ recipe.getNbComments()}} avis |  {{ recipe.getAverage()}} / 5 </p> #}
-							{# <p class="card-text">{{ recipe.getAverage()}} / 5</p> #}
-							{# <a href="#" class="btn btn-primary">Go somewhere</a> #}
-								<div class="d-flex"> <div class="">
+
+							<div class="d-flex">
+								<div class="">
 									<p class="mx-1 card-text">
 										<i class="fa-solid fa-comment-dots"></i>
 										{{ recipe.getNbComments()}}
@@ -60,5 +58,6 @@
 					</a>
 				</div>
 			{% endfor %}
-
-		{% endblock %}
+		</div>
+	</div>
+{% endblock %}

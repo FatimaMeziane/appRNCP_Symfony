@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Entity;
-
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -30,7 +27,6 @@ class Recipe
     #[assert\Length(min: 2, max: 50)]
     private ?string $name = null;
 
-
     #[Vich\UploadableField(mapping: 'recipe_images', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
 
@@ -39,8 +35,8 @@ class Recipe
 
     #[ORM\Column(nullable: true)]
     #[assert\Positive()]
-    // temps de preparation depasse pas 24h
-    #[assert\LessThan(1441)]
+    
+    #[assert\LessThan(1441)] // temps de preparation ne doit pas dépasser 24h 
     private ?int $time = null;
 
     #[ORM\Column(nullable: true)]
@@ -50,8 +46,7 @@ class Recipe
 
     #[ORM\Column(nullable: true)]
     #[assert\Positive()]
-    // entre 1 et 5
-    #[assert\LessThan(6)]
+    #[assert\LessThan(6)] // entre 1 et 5
     private ?int $difficulty = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -69,7 +64,6 @@ class Recipe
     #[ORM\Column(nullable: true)]
     private ?bool $isPublic = null;
 
-
     #[ORM\Column]
     #[assert\NotNull()]
     private ?\DateTimeImmutable $creatAt = null;
@@ -80,7 +74,6 @@ class Recipe
 
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     private Collection $ingredients;
-
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
@@ -94,6 +87,10 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\ManyToOne(inversedBy: 'recipe')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -102,6 +99,7 @@ class Recipe
         $this->marks = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
+    
     #[ORM\PrePersist()]
     public function setUpdateAtValue()
     {
@@ -323,13 +321,10 @@ class Recipe
     }
 
 
-
-
     /**
      * Get the value of average
      */
     public function getAverage()
-
     {
         $marks = $this->marks;
         if ($marks->toArray() === []) {
@@ -390,4 +385,21 @@ class Recipe
     {
         return $this->comments->count();
     }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 }

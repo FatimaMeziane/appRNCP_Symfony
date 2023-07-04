@@ -11,12 +11,16 @@
 				<div class="d-flex mt-5">
 					<hr>
 					<div>
-						<h1 class='mx-5 text-center'>{{recipe.name}}</h1>
+						<h1 class='mx-5 text-center '>{{recipe.name}}</h1>
+						<p class='text-center mt-4'>
+							<strong>Categorie :
+							</strong>
+							{{recipe.category}}</p>
 					</div>
 					<hr>
 				</div>
 				{# j'affiche l'auteur de la recette, le temps de preparation, date de création...  #}
-				<div class="infoRecipe mt-5 mx-5 d-flex justify-content-around">
+				<div class="infoRecipe mt-2 mx-5 d-flex justify-content-around">
 					<div>
 						<p>
 							par :
@@ -89,7 +93,7 @@
 
 				{# L'image de la recette #}
 				<div class=" text-center ">
-					<img  src="{{ vich_uploader_asset(recipe, 'imageFile')|default(asset('images/logoClubRecette2.png')) }}" class="img-fluid rounded-start recipePicture" alt="l'image de la recette">
+					<img src="{{ vich_uploader_asset(recipe, 'imageFile')|default(asset('images/logoClubRecette2.png')) }}" class="img-fluid rounded-start recipePicture" alt="l'image de la recette">
 				</div>
 
 				<div class="d-flex mt-5">
@@ -103,7 +107,6 @@
 				</div>
 
 				{# la liste des ingrédients #}
-
 				<div class="divIngredients">
 					{% if recipe.nbPeople %}
 						<p class="mx-2">
@@ -121,17 +124,14 @@
 								<span class="badge bg-primary">{{ ingredient.name }}</span>
 							</li>
 						</menu>
-
 					{% endfor %}
 				</div>
-
 				{#message flash indiquant que la note a été ajoutée avec succès #}
 				{% for message in app.flashes('success') %}
 					<div class=" alert alert-success mt-3">
 						{{ message }}
 					</div>
 				{% endfor %}
-
 				<div class="d-flex mt-5">
 					<hr class="">
 					<div class="">
@@ -167,7 +167,6 @@
 					{{form_end(form)}}
 
 				</div>
-
 				<div class="d-flex mt-5">
 					<hr>
 					<div>
@@ -177,7 +176,6 @@
 					</div>
 					<hr>
 				</div>
-
 				<div class=" w-75 m-auto mt-5">
 					<h2 class="">
 						{{ recipe.comments | length  }}
@@ -185,29 +183,28 @@
 					</h2>
 					<div class="comment">
 						{{form(formComment)}}
-					</div>
-					{%  for comment in recipe.comments %}
-						<div class="block p-2 m-1 rounded-lg shadow-lg bg-white">
-							<div class="d-flex bd-highlight mb-3">
-								<div class="p-1">
-									<img class="avatar" src={{asset('/images/profil.png')}} alt="avatar"/>
-								</div>
-								<div class="mx-3">
-									<strong class="font-semibold text-xl mb-2 text-gray-800">{{ comment.author }}</strong>
-									<p>{{ comment.createdAt|date('d/m/y H:i')  }}</p>
-									<p class="text-gray-500 font-light mb-6">
-										{{ comment.content }}
-									</p>
+						</div>
+						{%  for comment in recipe.comments %}
+							<div class="block p-2 m-1 rounded-lg shadow-lg bg-white">
+								<div class="d-flex bd-highlight mb-3">
+									<div class="p-1">
+										<img class="avatar" src={{asset('/images/profil.png')}} alt="avatar"/>
+									</div>
+									<div class="mx-3">
+										<strong class="font-semibold text-xl mb-2 text-gray-800">{{ comment.author }}</strong>
+										<p>{{ comment.createdAt|date('d/m/y H:i')  }}</p>
+										<p class="text-gray-500 font-light mb-6">
+											{{ comment.content }}
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-					{% endfor %}
+						{% endfor %}
 					</div>
-			</section>
-		</main>
-	</div>
-
-		{% endblock %}
-		{% block javascripts %}
-			<script src="{{ asset('js/scripts.js') }}"></script>
-		{% endblock %}
+				</section>
+			</main>
+		</div>
+	{% endblock %}
+	{% block javascripts %}
+		<script src="{{ asset('js/scripts.js') }}"></script>
+	{% endblock %}

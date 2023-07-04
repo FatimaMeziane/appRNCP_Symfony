@@ -3,14 +3,12 @@ body{
     margin: 0;
     box-sizing: border-box;
     font-family: Balthazar,Arial,sans-serif;   
-
 }
 
 a,a:hover,a:focus{
     text-decoration: none;
-    color: rgb(66, 65, 65);
+    color: rgb(0, 0, 0);
 }
-
 h1{
     font-size: 2rem;
     font-weight: bold;
@@ -19,41 +17,83 @@ h1{
 h2{
     font-size: 1.7rem;
     font-weight: bold;
- }
+}
 
- nav{
+nav:first-of-type{
     height: 35vh !important;
 }
+
+li
+{
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+nav:last-of-type{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 0 10px;
+} 
+.menu-items {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px;
+    list-style-type: none;
+    margin: auto;
+  }
+  
+.menu-items li {
+    margin-right: 20px;
+    padding-left: 20px;
+    border-left: 1px solid black;
+   cursor:pointer;
+  }
+
+
 .LogoClubRecettes{
     height: 130px;
     width: 130px;
     margin-bottom: 20px;
+}
+.LogoFooteer
+{
+    height: 80px;
+    width: 80px;
+    /* margin-bottom: 20px; */
 }
 /***** page login*****/
 .formLogin{
     width: 50% !important;
 }
 /******* page showRecipe ********/
-
+.recipePicture{
+    object-fit: cover;
+    object-position: center;
+    height: 500px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 14%;
+    }
 .recipShowDetails{
     font-size: 1.8rem;
     font-weight: bolder;
 }
-
 .divIngredients,.divDescription{
     margin-left: 12%;
 }
-
-
-.card-img-top{
-    height: 350px !important; 
+hr{
+    width: 550px !important;
+    height: 0 !important;
+    border: 2px solid #EFB73E !important;
 }
+.card-img-top{height: 350px !important; }
 
 /* page d'accueil*/
 .card
-{
-    width: 30rem;
-}
+{  width: 30rem;}
 
 .card_w{
     width: 30% !important;
@@ -65,35 +105,18 @@ h2{
     border: 2px solid #EFB73E !important;
 }
 
-hr{
-    width: 550px !important;
-    height: 0 !important;
-    border: 2px solid #EFB73E !important;
-}
-
 .publicRecipe{
     width: 30% !important;
 }
 /* show.recip */
-.recipePicture{
-    object-fit: cover;
-    object-position: center;
 
-    height: 500px;
-    width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position-y: 14%;
-    }
-    nav{
-        /* background-color: #5c2d91 !important; */
-        /* height: 300px !important; */
+nav:first-of-type{
         height : 83px !important;
-    }
-
+}
+/* 
     .infoRecipeDiv{
         border: 1px solid black !important;
-    }
+    } */
 .avatar{
     /* border: 1px solid red !important; */
     height: 50px !important;
@@ -115,15 +138,12 @@ hr{
   }
 
 
-  /*** Footer ***/
-
-
   /*********  Mobile **********/
 
 @media screen and  (min-width: 280px) and (max-width: 800px){
     
     /******Nav Bar********/
-    nav
+    nav:first-of-type
     {
      height: 260px !important;
     }
@@ -137,9 +157,8 @@ hr{
     /*** login ****/
     .formLogin{
         width: 75% !important;
-        border: 1px solid rebeccapurple;
     }
-     /*****  *****/
+     /***** Detail recipe *****/
 
      .infoRecipe{
         flex-direction: column;

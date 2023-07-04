@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Category;
 use Faker\Factory;
 use App\Entity\Mark;
 use App\Entity\User;
@@ -44,7 +45,7 @@ class AppFixtures extends Fixture
                 ->setpseudo(mt_rand(0, 1) === 1 ? $this->faker->firstName() : null)
                 ->setEmail($this->faker->email())
                 ->setRoles(['ROLE_USER'])
-                ->setPlainPassword('password');
+                ->setPlainPassword('password1');
             // on set un plainPassword quand on vas aller hasher au niveau de userListener
 
             // $hashPassword = $this->hasher->hashPassword(
@@ -60,24 +61,34 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 50; $i++) {
             $ingredient = new Ingredient();
             $ingredient->setName($this->faker->word())
-                ->setPrice(mt_rand(0, 100))
+                ->setPrice(mt_rand(0, 30))
                 ->setUser($users[mt_rand(0, count($users) - 1)]);
             $ingredients[] = $ingredient;
             $manager->persist($ingredient);
         }
+           // Category
+            $categoryArray = ['Plat','Dessert','Entrée','Acoumpagnements','Boisson','Goûter'];
+            $categories=[];
+           for ($i = 0; $i < 6; $i++) {
+               $category = new Category();
+               $category->setNom($categoryArray[$i]);
+               $categories[] = $category;
+               $manager->persist($category);
+           }
         // Recipes
         $recipes = [];
         for ($j = 1; $j < 25; $j++) {
             $recipe = new Recipe();
             $recipe->setName($this->faker->word())
                 ->setTime(mt_rand(0, 1) == 1 ? mt_rand(1, 1440) : null)
-                ->setNbPeople(mt_rand(0, 1) == 1 ? mt_rand(1, 50) : null)
+                ->setNbPeople(mt_rand(0, 1) == 1 ? mt_rand(1, 20) : null)
                 ->setDifficulty(mt_rand(0, 1) == 1 ? mt_rand(1, 5) : null)
                 ->setDescription($this->faker->text(300))
-                ->setPrice(mt_rand(0, 1) == 1 ? mt_rand(1, 1000) : null)
+                ->setPrice(mt_rand(0, 1) == 1 ? mt_rand(1, 50) : null)
                 ->setIsFavorite(mt_rand(0, 1) == 1 ? true : false)
                 ->setIsPublic(mt_rand(0, 1) == 1 ? true : false)
                 ->setUser($users[mt_rand(0, count($users) - 1)])
+                ->setCategory($categories[mt_rand(0, count($categories) - 1)])
                 // ->setImageFile($this->faker->imageUrl())
                 ;
             for ($k = 0; $k < mt_rand(5, 15); $k++) {

@@ -31,7 +31,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[assert\Length(min: 2, max: 50)]
     private ?string $pseudo = null;
 
-
     #[ORM\Column(length: 180, unique: true)]
     #[assert\Email()]
     #[assert\Length(min: 2, max: 180)]
@@ -44,14 +43,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
     private ?string $newPassword = null;
 
-
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     #[assert\NotBlank()]
     #[assert\Length(min: 8, minMessage:"minimun huit caractères")]
-    private ?string $password = 'password';
+ 
+    #[Assert\Regex(
+        pattern:"/^(?=.*\d)(?=.*[A-Z]).*$/",
+        message:"Le mot de passe doit contenir au moins un chiffre et une lettre majuscule."
+        )]
+    private ?string $password = 'Password1';
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt;
