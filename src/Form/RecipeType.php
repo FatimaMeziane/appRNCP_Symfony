@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Recipe;
 use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
@@ -49,6 +50,10 @@ class RecipeType extends AbstractType
                     new assert\Length(['min' => 2, 'max' => 50]),
                     new assert\NotBlank()
                 ]
+            ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'nom',
             ])
             ->add('time',IntegerType::class, [
                 'attr' => [
