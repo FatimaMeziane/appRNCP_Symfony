@@ -67,6 +67,7 @@
 						{% else %}
 							<p>Nombre de personne non renseigné</p>
 						{% endif %}
+						{# {{ recipe.nbPeople is null ? "Non Renseigne" :  recipe.nbPeople }} #}
 					</div>
 					<div class="">
 						{% if recipe.Difficulty %}
@@ -137,7 +138,6 @@
 					<div class="">
 						<p class='recipShowDetails mx-5'>
 							Description
-
 						</p>
 					</div>
 					<hr>
@@ -162,12 +162,17 @@
 						{{ recipe.average|number_format(2, '.', ',')}}/5
 					</p>
 					{{ form_start(form) }}
-					{{ form_widget(form)}}
+					{# 	{{ form_widget(form)}}
+															{{form_end(form)}} #}
 
-					{{form_end(form)}}
-
+					{{ form_widget(form.mark) }}
+					<div class="button-container d-flex gap-2">
+						{{ form_row(form.submit) }}
+						{{ form_row(form.cancel) }}
+					</div>
+					{{ form_end(form) }}
 				</div>
-				<div class="d-flex mt-5">
+				<div class="form-group  d-flex mt-5">
 					<hr>
 					<div>
 						<p class='recipShowDetails mx-5'>
@@ -176,35 +181,45 @@
 					</div>
 					<hr>
 				</div>
-				<div class=" w-75 m-auto mt-5">
+				<div class=" w-75 m-auto my-5">
 					<h2 class="">
 						{{ recipe.comments | length  }}
 						Commentaire(s)
 					</h2>
 					<div class="comment">
-						{{form(formComment)}}
+
+
+						{{ form_start(formComment) }}
+						{{ form_widget(formComment.content) }}
+						<div class="button-container d-flex gap-2">
+							{{ form_row(formComment.submit) }}
+							{{ form_row(formComment.cancel) }}
+
+							{{ form_end(formComment) }}
+
 						</div>
-						{%  for comment in recipe.comments %}
-							<div class="block p-2 m-1 rounded-lg shadow-lg bg-white">
-								<div class="d-flex bd-highlight mb-3">
-									<div class="p-1">
-										<img class="avatar" src={{asset('/images/profil.png')}} alt="avatar"/>
-									</div>
-									<div class="mx-3">
-										<strong class="font-semibold text-xl mb-2 text-gray-800">{{ comment.author }}</strong>
-										<p>{{ comment.createdAt|date('d/m/y H:i')  }}</p>
-										<p class="text-gray-500 font-light mb-6">
-											{{ comment.content }}
-										</p>
-									</div>
+					</div>
+					{%  for comment in recipe.comments %}
+						<div class="block p-2 m-1 rounded-lg shadow-lg bg-white">
+							<div class="d-flex bd-highlight mb-3">
+								<div class="p-1">
+									<img class="avatar" src={{asset('/images/profil.png')}} alt="avatar"/>
+								</div>
+								<div class="mx-3">
+									<strong class="font-semibold text-xl mb-2 text-gray-800">{{ comment.author }}</strong>
+									<p>{{ comment.createdAt|date('d/m/y H:i')  }}</p>
+									<p class="text-gray-500 font-light mb-6">
+										{{ comment.content }}
+									</p>
 								</div>
 							</div>
-						{% endfor %}
-					</div>
-				</section>
-			</main>
-		</div>
-	{% endblock %}
-	{% block javascripts %}
-		<script src="{{ asset('js/scripts.js') }}"></script>
-	{% endblock %}
+						</div>
+					{% endfor %}
+				</div>
+			</section>
+		</main>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('js/scripts.js') }}"></script>
+{% endblock %}

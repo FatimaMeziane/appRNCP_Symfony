@@ -5,11 +5,16 @@
 	<div class="container">
 
 		<h1>Modification de la recette</h1>
-		
-
 		{{ form_start(form) }}
 		{{ form_widget(form)}}
 	
+		<div class="form-check mt-4">
+			{{ form_label(form.isPublic) }}
+			{# {{ form_widget(form.isPublic) }} #}
+			<div class="my-custom-class-for-errors">
+				{{ form_errors(form.isPublic) }}
+			</div>
+		</div>
 		{#  si on voilais personalisé notre formulaire 
 					        <div class="form-group">
 								{{ form_label(form.name) }}

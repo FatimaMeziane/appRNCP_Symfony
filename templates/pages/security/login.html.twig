@@ -4,7 +4,7 @@
 
 {% block body %}
 	<div class="formLogin mx-auto my-5">
-		<h1 class="mt-4">Formulaire de connexion</h1>
+		<h1 class="mt-4">Nous sommes heureux de vous revoir !</h1>
 		{#  j'informe l'utilisateur que son compte a été créé avec succès.#}
 		{% for message in app.flashes('success') %}
 			<div class=" alert alert-success mt-3">
@@ -24,7 +24,7 @@
 				<input type="password" class="form-control" id="password" required placeholder="********" name="_password">
 			</div>
 
-			<button class="btn btn-success mt-4" type='submit'>se connecter
+			<button class="btn btn-warning mt-4" type='submit'>Me connecter
 			</button>
 		</form>
 	</div>

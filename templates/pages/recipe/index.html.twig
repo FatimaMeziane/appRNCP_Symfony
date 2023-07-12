@@ -11,7 +11,7 @@
 		{% if not recipes.getTotalItemCount is same as (0) %}
 			<h1>Mes recettes</h1>
 			<div class="d-flex justify-content-end">
-				<a href="{{ path('ajouteRecette')}}" class="btn btn-primary d-flex justify-content-end">Ajouter une recette</a>
+				<a href="{{ path('ajouteRecette')}}" class="btn btn-warning d-flex justify-content-end">Ajouter une recette</a>
 			</div>
 
 			{# message flash si on bien rajouter une nouvelle recette #}
@@ -39,7 +39,8 @@
 						<th scope="col">Difficulté</th>
 						<th scope="col">Date de création</th>
 
-						<th scope="col">Suppresion</th>
+						
+						
 					</tr>
 				</thead>
 				<tbody>
@@ -59,14 +60,20 @@
 								{{recipe.difficulty is same as(null) ? 'Non renseigné' : recipe.difficulty}}</td>
 							<td>
 								{{ recipe.creatAt|date("d/m/Y") }}</td>
+														<td>
+
+								<a href="{{ path('recipe.show', {id: recipe.id}) }}" class="btn btn-light">Détails</a>
+							</td>
 							<td>
 
 								<a href="{{ path('recipe.edit', {id: recipe.id}) }}" class="btn btn-info">Modifier</a>
 							</td>
-							<td>
-								<a href="{{ path('recipe.delete', {id: recipe.id}) }}" class="btn btn-warning">Suprimer</a>
-							</td>
-
+	
+						 <td>
+								{# <a href="{{ path('recipe.delete', {id: recipe.id}) }}" class="btn btn-warning">Suprimer</a> #}
+							{{ include('pages/recipe/delete.html.twig') }}
+							</td> 
+						
 						</tr>
 					{% endfor %}
 
@@ -80,7 +87,7 @@
 	{% else %}
 		<h4>il n'ya pas de recette</h4>
 		<div class="d-flex justify-content-center">
-			<a href="{{ path('ajouteRecette')}}" class="btn btn-primary">Créer une recette</a>
+			<a href="{{ path('ajouteRecette')}}" class="btn btn-warning">Créer une recette</a>
 		</div>
 
 	{% endif %}

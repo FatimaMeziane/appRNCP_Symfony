@@ -12,7 +12,6 @@ use App\Repository\MarkRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +19,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form;
-
 
 class RecipeController extends AbstractController
 {
@@ -45,6 +43,7 @@ class RecipeController extends AbstractController
             $repository->findBy(['user' => $this->getUser()]),
             $request->query->getInt('page', 1),
             10
+            
         );
         return $this->render('pages/recipe/index.html.twig', [
             'recipes' => $recipes,
@@ -78,12 +77,9 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    /**
-     * This conrtroller allow us to see a recipe if this one is public
-     *
+    /** This conrtroller allow us to see a recipe if this one is public
      * @param Recipe $recipe
-     * @return Response
-     */
+     * @return Response */
     #[Security("is_granted('ROLE_USER') and (recipe.isIsPublic() === true) || user === recipe.getUser()")]
     #[Route('/recette/{id}', 'recipe.show', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function show(
@@ -106,7 +102,6 @@ class RecipeController extends AbstractController
                 ->setRecipe($recipe);
             $exists = false;
         }
-
         $form = $this->createForm(MarkType::class, $mark);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -117,24 +112,20 @@ class RecipeController extends AbstractController
             );
             return $this->redirectToRoute('recipe.show', ['id' => $recipe->getId()]);
         }
-
         $comment = new Comment();
         $comment->setRecipe($recipe);
         if ($this->getUser()) {
             $comment->setAuthor($this->getUser());
         }
-
         $formComment = $this->createForm(CommentType::class, $comment);
-        $formComment->handleRequest($request);
+        $formComment->handleRequest($request);   
+        
         if ($formComment->isSubmitted() && $formComment->isValid()) {
             $manager->persist($comment);
             $manager->flush();
-
             $this->addFlash('success', 'Votre commentaire a bien été enregistré.');
-
             return $this->redirectToRoute('recipe.show', ['id' => $recipe->getId()]);
         }
-
         return $this->render('pages/recipe/show.html.twig', [
             'recipe' => $recipe,
             'formComment' => $formComment->createView(),
@@ -142,30 +133,29 @@ class RecipeController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    /**
-     * this controller is responsible for creating new recipe
-     *
+    /**this controller is responsible for creating new recipe
      * @param Request $req
      * @param EntityManagerInterface $manager
-     * @return Response
-     */
+     * @return Response*/
     #[IsGranted('ROLE_USER')]
     #[Route('/recette/nouvelleRecette', name: 'ajouteRecette', methods: ['GET', 'POST'])]
-
     public function newRecipe(
         Request $req,
         EntityManagerInterface $manager
     ): Response {
-
+        /* créer une nouvelle instance de l'entité Recipe  */
         $recipe = new Recipe();
-        /* créer la forme de type classe recipe */
+        $ingredient = [];
+        /*  créer le formulaire associé */
         $form = $this->createForm(RecipeType::class, $recipe);
-        /*Récuperer les donnée envoye par la form via request et les affecter au objet (ingredient) auparavant donnée auparametre de la fonction create form */
+        /*on demande au formulaire de traiter la requête*/
         $form->handleRequest($req);
         /*on test si notre formulaire est soumise et si elle est valide*/
         if ($form->isSubmitted() && $form->isValid()) {
+           /* récupérer les données soumises dans le formulaire et les assigner à l'objet $recipe*/
             $recipe = $form->getData();
-            $recipe->setUser($this->getUser());
+            // associer l'utilisateur actuellement connecté à la nouvelle entité Recipe 
+             $recipe->setUser($this->getUser());
             /*ensuite on fait appel au manager qui va persister la donnée et l'ajouter a la BD*/
             $manager->persist($recipe);
             $manager->flush();
@@ -236,23 +226,44 @@ class RecipeController extends AbstractController
         }
         return $this->render('pages/recipe/edit.html.twig', ['form' => $form->createview()]);
     }
+    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
 
     /**
      * this controller is responsible for deleting the recipe
      */
-    #[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]
-    #[Route('/recipe/supprimerRecipe/{id}', name: 'recipe.delete', methods: ['GET'])]
+    #[Route('/recipe/supprimerRecipe/{id}', name: 'recipe.delete', methods: ['POST'])]
     public function deleteRecipe(
         EntityManagerInterface $manager,
+        Request $request,
         recipe $recipe
     ): Response {
 
+        if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {
         $manager->remove($recipe);
         $manager->flush();
         $this->addFlash(
             'success',
-            'Votre recette a été modifié avec succès!'
+            'Votre recette a été supprimée avec succès !!'
         );
+    }
         return $this->redirectToRoute('recipe.index');
     }
+
+
+
+    
+    // public function delete(Request $request, Booking $booking, BookingRepository $bookingRepository): Response
+    // {
+    // Vérifie la validité du jeton CSRF
+    // if ($this->isCsrfTokenValid('delete'.$booking->getId(), $request->request->get('_token'))) {
+    //     // Supprime la réservation de la base de données
+    //     $bookingRepository->remove($booking, true);
+    // }
+
+    // Redirige vers la page d'index des réservations après la suppression
+    // return $this->redirectToRoute('app_booking_delete_index', [], Response::HTTP_SEE_OTHER);
+    // }
+
+
+    
 }

@@ -9,6 +9,7 @@ use App\Entity\User;
 class UserListener
 {
     private UserPasswordHasherInterface $hasher;
+    
 
     public function __construct(UserPasswordHasherInterface $hasher)
     {

@@ -13,19 +13,26 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
             'label' => 'Poster un nouveau commentaire',
             'label_attr' => [
                 'class' => 'mt-2 px-4',
-                'id' => 'commentContentId'
-                
             ],
             'constraints' => [
                 new assert\NotBlank()
             ]
        ])
+     
        ->add('submit', SubmitType::class, [
         'attr' => [
-            'class' => 'btn btn-primary mt-4',
+            'class' => 'btn btn-warning mt-4',
             'hidden' => true
             ],
-        'label' => 'Poster mon commentaire'
-    ]);
+        'label' => 'Commenter la recette'
+    ])
+    ->add('cancel', SubmitType::class, [
+        'attr' => [
+            'class' => 'btn btn-warning mt-4',
+            'hidden' => true
+            ],
+        'label' => 'Annuler'
+        ])
+    ;
     }
     }

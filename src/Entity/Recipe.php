@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Entity;
+
 use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,7 +37,7 @@ class Recipe
 
     #[ORM\Column(nullable: true)]
     #[assert\Positive()]
-    
+
     #[assert\LessThan(1441)] // temps de preparation ne doit pas dépasser 24h 
     private ?int $time = null;
 
@@ -62,7 +64,7 @@ class Recipe
     private ?bool $isFavorite = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $isPublic = null;
+    private ?bool $isPublic;
 
     #[ORM\Column]
     #[assert\NotNull()]
@@ -99,7 +101,7 @@ class Recipe
         $this->marks = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
-    
+
     #[ORM\PrePersist()]
     public function setUpdateAtValue()
     {
@@ -341,7 +343,7 @@ class Recipe
 
     /**
      * Get the value of comments
-     */ 
+     */
     public function getComments()
     {
         return $this->comments;
@@ -351,7 +353,7 @@ class Recipe
      * Set the value of comments
      *
      * @return  self
-     */ 
+     */
     public function setComments($comments)
     {
         $this->comments = $comments;
@@ -380,7 +382,7 @@ class Recipe
 
         return $this;
     }
-    
+
     public function getNbComments(): int
     {
         return $this->comments->count();
@@ -401,5 +403,4 @@ class Recipe
     {
         return $this->name;
     }
-
 }

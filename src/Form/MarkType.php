@@ -24,7 +24,6 @@ class MarkType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'form-select',
-
                 ],
                 'label' => 'La recette est terminée. Donnez votre avis ( note / 5 )',
                 'label_attr' => [
@@ -33,11 +32,19 @@ class MarkType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary mt-4',
+                    'class' => 'btn btn-warning mt-4',
                     'hidden' => true
                 ],
                 'label' => 'Noter la recette'
-            ]);
+            ])
+            ->add('cancel', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-warning mt-4',
+                    'hidden' => true
+                ],
+                'label' => 'Annuler'
+            ])
+          ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

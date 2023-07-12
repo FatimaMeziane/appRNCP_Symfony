@@ -41,9 +41,7 @@ class IngredientController extends AbstractController
         $ingredients = $paginator->paginate(
             //on recupere le user depuis le token de sécurite grace a la methode getUser fournis par AbstractController
             $repository->findBy(['user' => $this->getUser()]), /* query NOT result */
-
             $request->query->getInt('page', 1),
-
             10
         );
         return $this->render('pages/ingredient/index.html.twig', [
@@ -122,7 +120,7 @@ class IngredientController extends AbstractController
      * this controller is responsible for deleting the ingredient
      */
     #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
-    #[Route('/ingredient/supprimerIngredient/{id}', name: 'ingredient.delete', methods: ['GET'])]
+    #[Route('/ingredient/supprimerIngredient/{id}', name: 'ingredient.delete', methods: ['POST'])]
     public function deleteIngredient(
         EntityManagerInterface $manager,
         Ingredient $ingredient

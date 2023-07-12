@@ -3,6 +3,8 @@ body{
     margin: 0;
     box-sizing: border-box;
     font-family: Balthazar,Arial,sans-serif;   
+    height: 100vh;
+    width: 100vw;
 }
 
 a,a:hover,a:focus{
@@ -13,16 +15,14 @@ h1{
     font-size: 2rem;
     font-weight: bold;
 }
-
 h2{
-    font-size: 1.7rem;
+    font-size: 1rem;
     font-weight: bold;
+    width: 100%;
 }
-
 nav:first-of-type{
     height: 35vh !important;
 }
-
 li
 {
     font-size: 1.3rem;
@@ -51,7 +51,6 @@ nav:last-of-type{
    cursor:pointer;
   }
 
-
 .LogoClubRecettes{
     height: 130px;
     width: 130px;
@@ -61,7 +60,6 @@ nav:last-of-type{
 {
     height: 80px;
     width: 80px;
-    /* margin-bottom: 20px; */
 }
 /***** page login*****/
 .formLogin{
@@ -81,28 +79,31 @@ nav:last-of-type{
     font-size: 1.8rem;
     font-weight: bolder;
 }
-.divIngredients,.divDescription{
-    margin-left: 12%;
+.title2{
+  
+        font-size: 1.5rem;
+        font-weight: bolder;
+    width: 420px;
 }
+.divIngredients,.divDescription{
+    margin-left: 12%;}
 hr{
     width: 550px !important;
     height: 0 !important;
-    border: 2px solid #EFB73E !important;
-}
+    border: 2px solid #EFB73E !important;}
 .card-img-top{height: 350px !important; }
 
 /* page d'accueil*/
 .card
 {  width: 30rem;}
 
-.card_w{
-    width: 30% !important;
-}
+.card_w
+{ width: 30% !important;}
 
 .hrAccueil{
-    width: 250px !important;
-    height: 0 !important;
-    border: 2px solid #EFB73E !important;
+    width: 250px;
+    height: 0 ;
+    border: 2px solid #EFB73E;
 }
 
 .publicRecipe{
@@ -128,9 +129,7 @@ nav:first-of-type{
     height: 500px !important;
     width: 500px !important;
 }
-.bg-primary {
-    background-color: #5c2d91 !important;
-  }
+
   .btn-primary {
     color: #fff !important;
     background-color: #ff615a !important;
@@ -140,14 +139,14 @@ nav:first-of-type{
 
   /*********  Mobile **********/
 
-@media screen and  (min-width: 280px) and (max-width: 800px){
+  @media screen and  (min-width: 280px) and (max-width: 800px){
     
     /******Nav Bar********/
     nav:first-of-type
     {
      height: 260px !important;
     }
-
+    /*** logo ******/
     .LogoClubRecettes
     {
      height: 150px !important;
@@ -158,8 +157,8 @@ nav:first-of-type{
     .formLogin{
         width: 75% !important;
     }
-     /***** Detail recipe *****/
 
+     /***** Detail recipe *****/
      .infoRecipe{
         flex-direction: column;
      }

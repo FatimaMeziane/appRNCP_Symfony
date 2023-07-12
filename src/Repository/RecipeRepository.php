@@ -30,8 +30,8 @@ class RecipeRepository extends ServiceEntityRepository
     public function findPublicRecipe(?int $nbRecipes): array
     {
         $queryBuilder = $this->createQueryBuilder('r')
-            ->where('r.isPublic = 1')
-            ->orderBy('r.creatAt', 'DESC');
+            // ->where('r.isPublic = 1')
+            ->orderBy('r.id', 'DESC');
             if($nbRecipes !== 0  || $nbRecipes !== null)
             {
                 $queryBuilder->setMaxResults($nbRecipes);

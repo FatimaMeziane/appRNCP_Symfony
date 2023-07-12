@@ -11,7 +11,7 @@
 		{% if not ingredients.getTotalItemCount is same as (0) %}
 			<h1>Mes ingrédients</h1>
 			<div class="d-flex justify-content-end">
-				<a href="{{ path('ajouterIngredient')}}" class="btn btn-primary d-flex justify-content-end">Ajouter un ingredient</a>
+				<a href="{{ path('ajouterIngredient')}}" class="btn btn-warning d-flex justify-content-end">Ajouter un ingredient</a>
 			</div>
 			{# message flash si on bien rajouter un nv ingredient #}
 			{% for message in app.flashes('success') %}
@@ -35,8 +35,7 @@
 						<th scope="col">Nom</th>
 						<th scope="col">Prix</th>
 						<th scope="col">Date de création</th>
-						<th scope="col">Edition</th>
-						<th scope="col">Suppresion</th>
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -54,7 +53,8 @@
 								<a href="{{ path('ingredient.edit', {id: ingredient.id}) }}" class="btn btn-info">Modifier</a>
 							</td>
 							<td>
-								<a href="{{ path('ingredient.delete', {id: ingredient.id}) }}" class="btn btn-warning">Suprimer</a>
+								{{ include('pages/ingredient/delete.html.twig') }}
+								{# <a href="{{ path('ingredient.delete', {id: ingredient.id}) }}" class="btn btn-primary">Suprimer</a> #}
 							</td>
 
 						</tr>

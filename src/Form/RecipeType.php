@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class RecipeType extends AbstractType
 {
-    /*recuperer l'utilisateur courant*/
+    // récuperer l'utilisateur actuellement connecté 
     private $token;
     public function __construct(TokenStorageInterface $token)
     {
@@ -35,6 +35,29 @@ class RecipeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        ->add('isFavorite',CheckboxType::class,[
+            'attr' => [
+                'class' => 'form-check-input',
+
+            ],
+            'required'  => false,
+            'label' => 'Favoris ? ',
+            'label_attr' => [
+                'class' => 'form-check-label'
+            ],
+        ])
+         ->add('isPublic',CheckboxType::class,[
+            'attr' => [
+                'class' => 'form-check-input',
+
+            ],
+            'required'  => false,
+            'label' => 'Public ? ',
+            'label_attr' => [
+                'class' => 'form-check-label'
+            ],
+        ]
+        )
             ->add('name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
@@ -51,6 +74,8 @@ class RecipeType extends AbstractType
                     new assert\NotBlank()
                 ]
             ])
+      
+            
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'nom',
@@ -105,21 +130,7 @@ class RecipeType extends AbstractType
                     new assert\Positive()
                 ]
             ])
-                
-            // ->add('description',TextareaType::class,[
-            //     'attr' => [
-            //         'class' => 'form-control',
-            //         'placeholder' => "Description"
-
-            //     ],
-            //     'label' => 'Description de la recette',
-            //     'label_attr' => [
-            //         'class' => 'form-label mt-4'
-            //     ],
-            //     'constraints' => [
-            //         new assert\NotBlank()
-            //     ]
-            // ])
+      
             ->add('description',CKEditorType::class,[
                 'config' => [
                     'uiColor' => '#ffffff',    
@@ -141,29 +152,13 @@ class RecipeType extends AbstractType
                     new assert\LessThan(1441)
                 ]
             ])
-            ->add('isFavorite',CheckboxType::class,[
-                'attr' => [
-                    'class' => 'form-check-input',
-
-                ],
-                'required'  => false,
-                'label' => 'Favoris ? ',
-                'label_attr' => [
-                    'class' => 'form-check-label'
-                ],
-                // 'constraints' => [
-                //     new assert\NotNull()
-                // ]
-            ]
-            )
+         
             ->add('imageFile',VichImageType::class,[
                 'label' => 'Image de la recette',
                 'required'  => false,
                 'label_attr' => [
                     'class' => 'form-label mt-4'
-                ]
-
-                
+                ]    
             ])
             ->add('ingredients',EntityType::class,[
                 'class' => Ingredient::class,
